@@ -38,6 +38,19 @@ class csvData():
             s = re.sub(r'[^0-9a-z_]', '', s)
             #print(field, s)
             self.filteredFields.append(s)
+    def checkShape(self):
+        reader = self.getReader()
+        mismatched = False 
+        for row in reader:
+            self.totalRows +=1
+            self.numCols = row
+            nc = len(self.numCols)
+            #print(nc)
+            if nc not in self.mismatchRows:
+                self.mismatchRows.append(nc)
+        self.f.close()
+        if len(self.mismatchRows) > 1:
+            mismatached = True
     def createTable(self):
         sql = ''
         for field in self.filteredFields:
